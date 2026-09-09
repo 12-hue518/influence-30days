@@ -96,24 +96,25 @@
   .week{margin-bottom:8px;}
   .week-head{
     font-family:var(--serif);
-    font-size:15px;
+    font-size:19px;
+    font-weight:600;
     color:var(--ink);
-    padding:18px 0 8px;
+    padding:26px 0 12px;
     display:flex;
     justify-content:space-between;
     align-items:baseline;
-    border-bottom:1px solid var(--paper-line);
+    border-bottom:1.5px solid var(--paper-line);
   }
   .week-head .wk-count{
-    font-size:12px;
+    font-size:13.5px;
     color:var(--text-muted);
     font-family:var(--sans);
   }
 
   .day{
     display:flex;
-    gap:14px;
-    padding:16px 0;
+    gap:20px;
+    padding:26px 0;
     border-bottom:1px solid var(--paper-line);
     align-items:flex-start;
     cursor:pointer;
@@ -121,40 +122,42 @@
   .day:last-child{border-bottom:none;}
   .day-num{
     font-family:var(--serif);
-    font-size:13px;
+    font-size:15px;
     color:var(--text-muted);
-    width:44px;
+    width:56px;
     flex-shrink:0;
-    padding-top:2px;
+    padding-top:3px;
   }
   .day-num .n{
     display:block;
-    font-size:20px;
+    font-size:34px;
     color:var(--ink);
     font-weight:600;
+    line-height:1.15;
   }
   .day.done .day-num .n{color:var(--done);}
   .day-body{flex:1;min-width:0;}
   .day-title{
-    font-size:14.5px;
-    font-weight:600;
+    font-size:19px;
+    font-weight:700;
     color:var(--text);
-    margin:0 0 4px;
+    margin:0 0 10px;
+    line-height:1.5;
   }
   .day.done .day-title{color:var(--text-muted);text-decoration:line-through;text-decoration-color:var(--paper-line);}
   .day-jdi{
     font-family:var(--serif);
-    font-size:13.5px;
-    line-height:1.75;
+    font-size:16.5px;
+    line-height:1.95;
     color:var(--text);
     margin:0;
   }
   .day.done .day-jdi{color:var(--text-muted);}
   .check{
-    width:22px;height:22px;
-    border:1.5px solid var(--ink);
+    width:32px;height:32px;
+    border:2px solid var(--ink);
     flex-shrink:0;
-    margin-top:2px;
+    margin-top:4px;
     display:flex;align-items:center;justify-content:center;
     transition:all .15s ease;
   }
@@ -162,7 +165,7 @@
     background:var(--done);
     border-color:var(--done);
   }
-  .check svg{opacity:0;width:13px;height:13px;}
+  .check svg{opacity:0;width:18px;height:18px;}
   .day.done .check svg{opacity:1;}
 
   .footer-note{
@@ -187,35 +190,116 @@
   .modal-bg.open{display:flex;}
   .modal{
     background:var(--paper);
-    max-width:340px;
+    max-width:360px;
     width:100%;
-    padding:24px;
+    padding:20px;
     text-align:center;
+    border-radius:10px;
   }
   .modal h2{
     font-family:var(--serif);
-    font-size:19px;
+    font-size:20px;
     color:var(--ink);
-    margin:14px 0 6px;
+    margin:16px 0 6px;
   }
   .modal p.mini{
-    font-size:12.5px;
+    font-size:13px;
     color:var(--text-muted);
     margin:0 0 18px;
   }
-  #shareCanvas{
-    width:100%;
-    height:auto;
-    display:block;
-    margin-bottom:18px;
+
+  /* shareable streak card — CSS rendition of the reference design */
+  .share-card{
+    position:relative;
+    aspect-ratio:1;
+    border-radius:8px;
+    overflow:hidden;
+    background: var(--card-bg, linear-gradient(#1F2A44,#111826));
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
   }
-  .modal-actions{display:flex;gap:10px;}
+  .share-card::before{
+    content:'';
+    position:absolute;
+    inset:9%;
+    border:1px solid var(--gold);
+    border-radius:2px;
+    pointer-events:none;
+  }
+  .share-card-inner{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:12% 10% 10%;
+    text-align:center;
+  }
+  .sc-kicker{
+    font-family:var(--serif);
+    font-size:3.6vw;
+    min-font-size:12px;
+    color:var(--gold);
+    margin-bottom:6%;
+    letter-spacing:.02em;
+  }
+  .sc-number{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:22vw;
+    line-height:.9;
+    color:#FBF8F2;
+    text-shadow: 0 0 18px rgba(184,134,43,.85), 0 0 42px rgba(184,134,43,.5);
+    margin-bottom:2%;
+  }
+  .sc-days{
+    font-family:var(--sans);
+    font-size:5vw;
+    letter-spacing:.5em;
+    color:var(--gold-soft);
+    margin-bottom:3%;
+    padding-left:.5em; /* optical centering for the letter-spacing */
+  }
+  .sc-achieved{
+    font-family:var(--serif);
+    font-size:5.5vw;
+    font-weight:600;
+    color:#FBF8F2;
+    letter-spacing:.15em;
+    margin-bottom:4%;
+  }
+  .sc-remain{
+    font-family:var(--sans);
+    font-size:3.2vw;
+    color:#c9d0c2;
+    margin-bottom:6%;
+  }
+  .sc-divider{
+    width:22%;
+    height:1px;
+    background:rgba(184,134,43,.55);
+    margin-bottom:6%;
+  }
+  .sc-sub{
+    font-family:var(--sans);
+    font-size:2.9vw;
+    color:rgba(251,248,242,.7);
+    margin-bottom:2%;
+  }
+  .sc-author{
+    font-family:var(--serif);
+    font-size:2.9vw;
+    color:rgba(251,248,242,.7);
+  }
+
+  .modal-actions{display:flex;gap:10px;margin-top:18px;}
   .btn{
     flex:1;
-    padding:12px;
-    font-size:13.5px;
+    padding:14px;
+    font-size:14.5px;
     font-family:var(--sans);
     border:1.5px solid var(--ink);
+    border-radius:6px;
     background:transparent;
     color:var(--ink);
     cursor:pointer;
@@ -255,7 +339,19 @@
 
 <div class="modal-bg" id="modalBg">
   <div class="modal">
-    <canvas id="shareCanvas" width="1080" height="1080"></canvas>
+    <div class="share-card" id="shareCard">
+      <div class="share-card-inner">
+        <div class="sc-kicker">『影響力の正体』30日チャレンジ</div>
+        <div class="sc-number" id="scNumber">5</div>
+        <div class="sc-days">DAYS</div>
+        <div class="sc-achieved">連続達成</div>
+        <div class="sc-remain" id="scRemain">残り 25 日</div>
+        <div class="sc-divider"></div>
+        <div class="sc-sub">「知っている」を「できる」に変える30日間</div>
+        <div class="sc-author">中島侑子</div>
+      </div>
+    </div>
+    <canvas id="shareCanvas" width="1080" height="1080" style="display:none"></canvas>
     <h2 id="modalTitle">5日連続、達成です</h2>
     <p class="mini">画像を保存して、シェアできます</p>
     <div class="modal-actions">
@@ -386,51 +482,38 @@ function toggleDay(day){
   }
 }
 
-function drawDiamond(ctx, x, y, size, color, alpha=1){
-  ctx.save();
-  ctx.globalAlpha = alpha;
-  ctx.translate(x, y);
-  ctx.rotate(Math.PI/4);
-  ctx.fillStyle = color;
-  ctx.fillRect(-size/2, -size/2, size, size);
-  ctx.restore();
+// レベル：5日=1 … 30日=6（達成日数に応じて背景の輝きだけ段階的に強くする）
+function streakLevel(streak){
+  return Math.min(6, Math.max(1, Math.round(streak / 5)));
 }
 
-function drawSparkle(ctx, x, y, size, color, alpha=1){
-  ctx.save();
-  ctx.globalAlpha = alpha;
-  ctx.translate(x, y);
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(-size, 0); ctx.lineTo(size, 0);
-  ctx.moveTo(0, -size); ctx.lineTo(0, size);
-  ctx.stroke();
-  ctx.restore();
+function cardBackground(level, isPeak){
+  if(level <= 2) return 'linear-gradient(180deg, #1F2A44, #111826)';
+  if(level <= 4) return 'radial-gradient(circle at 50% 45%, #2b3a5e, #111826 75%)';
+  return `radial-gradient(circle at 50% 45%, ${isPeak ? '#4a3819' : '#2f3f66'}, #1F2A44 55%, #0d1220)`;
 }
 
+// CSSカードと同じ見た目を、保存用にcanvasへそのまま再現する
 function drawShareCard(streak){
   const canvas = document.getElementById('shareCanvas');
   const ctx = canvas.getContext('2d');
   const W = canvas.width, H = canvas.height;
-  const cx = W/2, cy = H/2;
-
-  // level: 5日=1 … 30日=6（達成日数に応じて演出を段階的に強くする）
-  const level = Math.min(6, Math.max(1, Math.round(streak / 5)));
+  const cx = W/2;
+  const level = streakLevel(streak);
   const isPeak = streak >= TOTAL;
 
-  // --- 背景（レベルが上がるほど輝きが増す） ---
+  // 背景
   let grad;
   if(level <= 2){
     grad = ctx.createLinearGradient(0,0,0,H);
     grad.addColorStop(0, '#1F2A44');
     grad.addColorStop(1, '#111826');
   } else if(level <= 4){
-    grad = ctx.createRadialGradient(cx,cy,40,cx,cy,W*0.75);
+    grad = ctx.createRadialGradient(cx,H*0.45,40,cx,H*0.45,W*0.75);
     grad.addColorStop(0, '#2b3a5e');
     grad.addColorStop(1, '#111826');
   } else {
-    grad = ctx.createRadialGradient(cx,cy,40,cx,cy,W*0.8);
+    grad = ctx.createRadialGradient(cx,H*0.45,40,cx,H*0.45,W*0.8);
     grad.addColorStop(0, isPeak ? '#4a3819' : '#2f3f66');
     grad.addColorStop(0.55, '#1F2A44');
     grad.addColorStop(1, '#0d1220');
@@ -438,105 +521,70 @@ function drawShareCard(streak){
   ctx.fillStyle = grad;
   ctx.fillRect(0,0,W,H);
 
-  // --- 後光（サンバースト）：レベル3以上 ---
-  if(level >= 3){
-    const rays = level >= 6 ? 32 : (level >= 5 ? 24 : 16);
-    ctx.save();
-    ctx.translate(cx, cy);
-    for(let i=0; i<rays; i++){
-      ctx.rotate((Math.PI*2)/rays);
-      ctx.beginPath();
-      ctx.moveTo(0, -170);
-      ctx.lineTo(0, -(380 + level*35));
-      ctx.strokeStyle = `rgba(184,134,43,${0.06 + level*0.02})`;
-      ctx.lineWidth = level >= 6 ? 5 : 3;
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-
-  // --- 外枠（レベルが上がるほど二重・三重に） ---
-  const frameCount = level >= 6 ? 3 : (level >= 4 ? 2 : 1);
-  for(let i=0; i<frameCount; i++){
-    const inset = 48 + i*22;
-    ctx.globalAlpha = 1 - i*0.3;
-    ctx.strokeStyle = '#B8862B';
-    ctx.lineWidth = 3 - i*0.5;
-    ctx.strokeRect(inset, inset, W-inset*2, H-inset*2);
-  }
-  ctx.globalAlpha = 1;
-
-  // --- 四隅の飾り：レベル4以上 ---
-  if(level >= 4){
-    [[92,92],[W-92,92],[92,H-92],[W-92,H-92]].forEach(([x,y])=>{
-      drawDiamond(ctx, x, y, level >= 6 ? 20 : 13, '#B8862B');
-    });
-  }
-
-  // --- キラキラ：レベル5以上 ---
-  if(level >= 5){
-    const sparkCount = level >= 6 ? 16 : 9;
-    for(let i=0; i<sparkCount; i++){
-      const ang = (Math.PI*2/sparkCount) * i + (i%2)*0.2;
-      const dist = 250 + (i%3)*70;
-      const x = cx + Math.cos(ang)*dist;
-      const y = cy + Math.sin(ang)*dist*0.85;
-      drawSparkle(ctx, x, y, 6 + (i%3)*4, '#F5EEDD', 0.85);
-    }
-  }
+  // 内側のゴールド枠（CSSの ::before と同じ 9% inset）
+  const inset = W*0.09;
+  ctx.strokeStyle = '#B8862B';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(inset, inset, W-inset*2, H-inset*2);
 
   ctx.textAlign = 'center';
 
   ctx.fillStyle = '#B8862B';
-  ctx.font = '28px sans-serif';
-  ctx.fillText('『影響力の正体』30日チャレンジ', cx, 190);
+  ctx.font = '32px "Noto Serif JP", serif';
+  ctx.fillText('『影響力の正体』30日チャレンジ', cx, 230);
 
-  // --- 数字（レベルが上がるほど光彩が強くなる） ---
+  // 数字（レベルが上がるほど光彩が強くなる）
   ctx.save();
   ctx.shadowColor = '#B8862B';
-  ctx.shadowBlur = 6 + level*10;
+  ctx.shadowBlur = 14 + level*8;
   ctx.fillStyle = '#FBF8F2';
-  ctx.font = 'bold 220px serif';
-  ctx.fillText(streak, cx, 500);
+  ctx.font = 'bold 320px "Noto Serif JP", serif';
+  ctx.fillText(streak, cx, 480);
   ctx.restore();
 
-  ctx.fillStyle = '#FBF8F2';
-  ctx.font = '40px serif';
-  ctx.fillText('日、連続達成', cx, 580);
+  ctx.fillStyle = '#F5EEDD';
+  ctx.font = '46px "Noto Sans JP", sans-serif';
+  ctx.fillText('D A Y S', cx, 580);
 
-  ctx.fillStyle = '#8A9A7E';
-  ctx.font = '26px sans-serif';
-  ctx.fillText(isPeak ? '30日、走りきりました。' : `残り ${TOTAL - streak} 日`, cx, 660);
+  ctx.fillStyle = '#FBF8F2';
+  ctx.font = 'bold 56px "Noto Serif JP", serif';
+  ctx.fillText('連 続 達 成', cx, 660);
+
+  ctx.fillStyle = '#c9d0c2';
+  ctx.font = '32px "Noto Sans JP", sans-serif';
+  ctx.fillText(isPeak ? '30日、走りきりました。' : `残り ${TOTAL - streak} 日`, cx, 730);
 
   // divider
-  ctx.strokeStyle = 'rgba(184,134,43,0.5)';
+  ctx.strokeStyle = 'rgba(184,134,43,0.55)';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(cx-100, 740);
-  ctx.lineTo(cx+100, 740);
+  ctx.moveTo(cx-120, 800);
+  ctx.lineTo(cx+120, 800);
   ctx.stroke();
 
   ctx.fillStyle = 'rgba(251,248,242,0.7)';
-  ctx.font = '24px sans-serif';
-  ctx.fillText('「知っている」を「できる」に変える30日間', cx, 800);
-  ctx.fillText('中島侑子', cx, 850);
-
-  // --- ピーク（30日）だけの特別演出 ---
-  if(isPeak){
-    ctx.save();
-    ctx.shadowColor = '#B8862B';
-    ctx.shadowBlur = 18;
-    ctx.fillStyle = '#B8862B';
-    ctx.font = 'bold 32px serif';
-    ctx.fillText('C O M P L E T E', cx, 920);
-    ctx.restore();
-  }
+  ctx.font = '28px "Noto Sans JP", sans-serif';
+  ctx.fillText('「知っている」を「できる」に変える30日間', cx, 850);
+  ctx.font = '28px "Noto Serif JP", serif';
+  ctx.fillText('中島侑子', cx, 895);
 }
 
 function showShareCard(streak){
+  const level = streakLevel(streak);
+  const isPeak = streak >= TOTAL;
+
+  // オンスクリーン表示はCSSカードで（くっきり表示・端末負荷も軽い）
+  const card = document.getElementById('shareCard');
+  card.style.setProperty('--card-bg', cardBackground(level, isPeak));
+  document.getElementById('scNumber').textContent = streak;
+  document.getElementById('scRemain').textContent =
+    isPeak ? '30日、走りきりました。' : `残り ${TOTAL - streak} 日`;
+
+  // 保存用PNGは同じデザインをcanvasに描画
   drawShareCard(streak);
+
   document.getElementById('modalTitle').textContent =
-    streak >= TOTAL ? '30日間、走りきりました' : `${streak}日連続、達成です`;
+    isPeak ? '30日間、走りきりました' : `${streak}日連続、達成です`;
   document.getElementById('modalBg').classList.add('open');
 }
 
