@@ -1,4 +1,4 @@
-const CACHE_NAME = 'influence-30day-v3';
+const CACHE_NAME = 'influence-30day-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -28,10 +28,11 @@ self.addEventListener('fetch', (event) => {
     (req.method === 'GET' && (req.headers.get('accept') || '').includes('text/html'));
 
   if (isHTML) {
-    // ページ本体は常にネットワークを優先。更新をすぐ反映するため。
+    // ページ本体は常にネットワークを優先。ブラウザの通常キャッシュも
+    // 経由させず（cache:'no-store'）、必ず最新のバイト列を取りにいく。
     // オフライン時だけキャッシュにフォールバックする。
     event.respondWith(
-      fetch(req).then((response) => {
+      fetch(req, { cache: 'no-store' }).then((response) => {
         const copy = response.clone();
         caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
         return response;
