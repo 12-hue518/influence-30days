@@ -11,6 +11,9 @@
 <meta name="apple-mobile-web-app-title" content="30日チャレンジ">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#1F2A44;
@@ -493,6 +496,51 @@ function cardBackground(level, isPeak){
   return `radial-gradient(circle at 50% 45%, ${isPeak ? '#4a3819' : '#2f3f66'}, #1F2A44 55%, #0d1220)`;
 }
 
+const FONT_SERIF = '"Noto Serif JP", "Hiragino Mincho ProN", serif';
+const FONT_SANS  = '"Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif';
+
+// 端末やフォントの読み込み状況で文字の縦幅が変わっても被らないよう、
+// 実測（measureText）しながら上から順に積んでいく
+function drawStackedLine(ctx, text, cx, cursorY, font, color, gapAfter, glow){
+  ctx.font = font;
+  ctx.textAlign = 'center';
+  const m = ctx.measureText(text);
+  const asc = m.actualBoundingBoxAscent || parseInt(font, 10) * 0.85;
+  const desc = m.actualBoundingBoxDescent || parseInt(font, 10) * 0.25;
+  const baseline = cursorY + asc;
+
+  if(glow){
+    ctx.save();
+    ctx.shadowColor = glow.color;
+    ctx.shadowBlur = glow.blur;
+    ctx.fillStyle = color;
+    ctx.fillText(text, cx, baseline);
+    ctx.restore();
+    // ぼかしの外側にも軽くにじませて、光彩をきちんと見せつつ次の行とは被らせない
+  } else {
+    ctx.fillStyle = color;
+    ctx.fillText(text, cx, baseline);
+  }
+  return cursorY + asc + desc + gapAfter;
+}
+
+// canvasで日本語フォントを正しく計測・描画するには、事前に読み込みが終わっている必要がある
+async function ensureFontsLoaded(){
+  if(!(document.fonts && document.fonts.load)) return;
+  try{
+    await Promise.all([
+      document.fonts.load(`30px ${FONT_SERIF}`),
+      document.fonts.load(`bold 260px ${FONT_SERIF}`),
+      document.fonts.load(`bold 54px ${FONT_SERIF}`),
+      document.fonts.load(`26px ${FONT_SERIF}`),
+      document.fonts.load(`42px ${FONT_SANS}`),
+      document.fonts.load(`30px ${FONT_SANS}`),
+      document.fonts.load(`26px ${FONT_SANS}`),
+    ]);
+    await document.fonts.ready;
+  }catch(e){ /* フォント読み込みに失敗しても、フォールバック体で描画を続ける */ }
+}
+
 // CSSカードと同じ見た目を、保存用にcanvasへそのまま再現する
 function drawShareCard(streak){
   const canvas = document.getElementById('shareCanvas');
@@ -527,49 +575,29 @@ function drawShareCard(streak){
   ctx.lineWidth = 2;
   ctx.strokeRect(inset, inset, W-inset*2, H-inset*2);
 
-  ctx.textAlign = 'center';
-
-  ctx.fillStyle = '#B8862B';
-  ctx.font = '30px "Noto Serif JP", serif';
-  ctx.fillText('『影響力の正体』30日チャレンジ', cx, 165);
-
-  // 数字（レベルが上がるほど光彩が強くなる。ただしキッカー文字と被らないよう抑えめに）
-  ctx.save();
-  ctx.shadowColor = '#B8862B';
-  ctx.shadowBlur = 10 + level*6;
-  ctx.fillStyle = '#FBF8F2';
-  ctx.font = 'bold 260px "Noto Serif JP", serif';
-  ctx.fillText(streak, cx, 470);
-  ctx.restore();
-
-  ctx.fillStyle = '#F5EEDD';
-  ctx.font = '42px "Noto Sans JP", sans-serif';
-  ctx.fillText('D A Y S', cx, 565);
-
-  ctx.fillStyle = '#FBF8F2';
-  ctx.font = 'bold 54px "Noto Serif JP", serif';
-  ctx.fillText('連 続 達 成', cx, 650);
-
-  ctx.fillStyle = '#c9d0c2';
-  ctx.font = '30px "Noto Sans JP", sans-serif';
-  ctx.fillText(isPeak ? '30日、走りきりました。' : `残り ${TOTAL - streak} 日`, cx, 722);
+  // 上から順に積み上げて描画（実測レイアウトなので端末・フォント差で被らない）
+  let y = H * 0.15;
+  y = drawStackedLine(ctx, '『影響力の正体』30日チャレンジ', cx, y, `30px ${FONT_SERIF}`, '#B8862B', 46);
+  y = drawStackedLine(ctx, String(streak), cx, y, `bold 260px ${FONT_SERIF}`, '#FBF8F2', 26,
+    { color: '#B8862B', blur: 10 + level*6 });
+  y = drawStackedLine(ctx, 'D A Y S', cx, y, `42px ${FONT_SANS}`, '#F5EEDD', 10);
+  y = drawStackedLine(ctx, '連 続 達 成', cx, y, `bold 54px ${FONT_SERIF}`, '#FBF8F2', 26);
+  y = drawStackedLine(ctx, isPeak ? '30日、走りきりました。' : `残り ${TOTAL - streak} 日`, cx, y, `30px ${FONT_SANS}`, '#c9d0c2', 44);
 
   // divider
   ctx.strokeStyle = 'rgba(184,134,43,0.55)';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(cx-120, 788);
-  ctx.lineTo(cx+120, 788);
+  ctx.moveTo(cx-120, y);
+  ctx.lineTo(cx+120, y);
   ctx.stroke();
+  y += 40;
 
-  ctx.fillStyle = 'rgba(251,248,242,0.7)';
-  ctx.font = '26px "Noto Sans JP", sans-serif';
-  ctx.fillText('「知っている」を「できる」に変える30日間', cx, 840);
-  ctx.font = '26px "Noto Serif JP", serif';
-  ctx.fillText('中島侑子', cx, 882);
+  y = drawStackedLine(ctx, '「知っている」を「できる」に変える30日間', cx, y, `26px ${FONT_SANS}`, 'rgba(251,248,242,0.7)', 12);
+  drawStackedLine(ctx, '中島侑子', cx, y, `26px ${FONT_SERIF}`, 'rgba(251,248,242,0.7)', 0);
 }
 
-function showShareCard(streak){
+async function showShareCard(streak){
   const level = streakLevel(streak);
   const isPeak = streak >= TOTAL;
 
@@ -580,12 +608,13 @@ function showShareCard(streak){
   document.getElementById('scRemain').textContent =
     isPeak ? '30日、走りきりました。' : `残り ${TOTAL - streak} 日`;
 
-  // 保存用PNGは同じデザインをcanvasに描画
-  drawShareCard(streak);
-
   document.getElementById('modalTitle').textContent =
     isPeak ? '30日間、走りきりました' : `${streak}日連続、達成です`;
   document.getElementById('modalBg').classList.add('open');
+
+  // 保存用PNGは同じデザインをcanvasに描画（フォント読み込みを待ってから）
+  await ensureFontsLoaded();
+  drawShareCard(streak);
 }
 
 document.getElementById('closeBtn').addEventListener('click', ()=>{
