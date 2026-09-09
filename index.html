@@ -530,43 +530,43 @@ function drawShareCard(streak){
   ctx.textAlign = 'center';
 
   ctx.fillStyle = '#B8862B';
-  ctx.font = '32px "Noto Serif JP", serif';
-  ctx.fillText('『影響力の正体』30日チャレンジ', cx, 230);
+  ctx.font = '30px "Noto Serif JP", serif';
+  ctx.fillText('『影響力の正体』30日チャレンジ', cx, 165);
 
-  // 数字（レベルが上がるほど光彩が強くなる）
+  // 数字（レベルが上がるほど光彩が強くなる。ただしキッカー文字と被らないよう抑えめに）
   ctx.save();
   ctx.shadowColor = '#B8862B';
-  ctx.shadowBlur = 14 + level*8;
+  ctx.shadowBlur = 10 + level*6;
   ctx.fillStyle = '#FBF8F2';
-  ctx.font = 'bold 320px "Noto Serif JP", serif';
-  ctx.fillText(streak, cx, 480);
+  ctx.font = 'bold 260px "Noto Serif JP", serif';
+  ctx.fillText(streak, cx, 470);
   ctx.restore();
 
   ctx.fillStyle = '#F5EEDD';
-  ctx.font = '46px "Noto Sans JP", sans-serif';
-  ctx.fillText('D A Y S', cx, 580);
+  ctx.font = '42px "Noto Sans JP", sans-serif';
+  ctx.fillText('D A Y S', cx, 565);
 
   ctx.fillStyle = '#FBF8F2';
-  ctx.font = 'bold 56px "Noto Serif JP", serif';
-  ctx.fillText('連 続 達 成', cx, 660);
+  ctx.font = 'bold 54px "Noto Serif JP", serif';
+  ctx.fillText('連 続 達 成', cx, 650);
 
   ctx.fillStyle = '#c9d0c2';
-  ctx.font = '32px "Noto Sans JP", sans-serif';
-  ctx.fillText(isPeak ? '30日、走りきりました。' : `残り ${TOTAL - streak} 日`, cx, 730);
+  ctx.font = '30px "Noto Sans JP", sans-serif';
+  ctx.fillText(isPeak ? '30日、走りきりました。' : `残り ${TOTAL - streak} 日`, cx, 722);
 
   // divider
   ctx.strokeStyle = 'rgba(184,134,43,0.55)';
   ctx.lineWidth = 1.5;
   ctx.beginPath();
-  ctx.moveTo(cx-120, 800);
-  ctx.lineTo(cx+120, 800);
+  ctx.moveTo(cx-120, 788);
+  ctx.lineTo(cx+120, 788);
   ctx.stroke();
 
   ctx.fillStyle = 'rgba(251,248,242,0.7)';
-  ctx.font = '28px "Noto Sans JP", sans-serif';
-  ctx.fillText('「知っている」を「できる」に変える30日間', cx, 850);
-  ctx.font = '28px "Noto Serif JP", serif';
-  ctx.fillText('中島侑子', cx, 895);
+  ctx.font = '26px "Noto Sans JP", sans-serif';
+  ctx.fillText('「知っている」を「できる」に変える30日間', cx, 840);
+  ctx.font = '26px "Noto Serif JP", serif';
+  ctx.fillText('中島侑子', cx, 882);
 }
 
 function showShareCard(streak){
