@@ -193,9 +193,8 @@
   .modal-bg.open{display:flex;}
   .modal{
     background:var(--paper);
-    max-width:360px;
-    width:100%;
-    padding:20px;
+    width:clamp(260px, 88vw, 340px);
+    padding:18px;
     text-align:center;
     border-radius:10px;
   }
@@ -211,9 +210,12 @@
     margin:0 0 18px;
   }
 
-  /* shareable streak card — CSS rendition of the reference design */
+  /* shareable streak card — CSS rendition of the reference design.
+     Fixed px sizing (not vw) so it can't blow up on wide desktop viewports;
+     the card's own width is bounded by .modal above, on every device. */
   .share-card{
     position:relative;
+    width:100%;
     aspect-ratio:1;
     border-radius:8px;
     overflow:hidden;
@@ -235,63 +237,62 @@
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    padding:12% 10% 10%;
+    padding:10% 8% 8%;
     text-align:center;
   }
   .sc-kicker{
     font-family:var(--serif);
-    font-size:3.6vw;
-    min-font-size:12px;
+    font-size:9px;
     color:var(--gold);
-    margin-bottom:6%;
+    margin-bottom:10px;
     letter-spacing:.02em;
   }
   .sc-number{
     font-family:var(--serif);
     font-weight:700;
-    font-size:22vw;
+    font-size:70px;
     line-height:.9;
     color:#FBF8F2;
-    text-shadow: 0 0 18px rgba(184,134,43,.85), 0 0 42px rgba(184,134,43,.5);
-    margin-bottom:2%;
+    text-shadow: 0 0 14px rgba(184,134,43,.85), 0 0 32px rgba(184,134,43,.5);
+    margin-bottom:4px;
   }
   .sc-days{
     font-family:var(--sans);
-    font-size:5vw;
+    font-size:12px;
     letter-spacing:.5em;
     color:var(--gold-soft);
-    margin-bottom:3%;
+    margin-bottom:6px;
     padding-left:.5em; /* optical centering for the letter-spacing */
   }
   .sc-achieved{
     font-family:var(--serif);
-    font-size:5.5vw;
+    font-size:16px;
     font-weight:600;
     color:#FBF8F2;
     letter-spacing:.15em;
-    margin-bottom:4%;
+    margin-bottom:8px;
   }
   .sc-remain{
     font-family:var(--sans);
-    font-size:3.2vw;
+    font-size:9px;
     color:#c9d0c2;
-    margin-bottom:6%;
+    margin-bottom:10px;
   }
   .sc-divider{
     width:22%;
     height:1px;
     background:rgba(184,134,43,.55);
-    margin-bottom:6%;
+    margin-bottom:10px;
   }
   .sc-sub{
     font-family:var(--sans);
-    font-size:2.9vw;
+    font-size:8px;
     color:rgba(251,248,242,.7);
-    margin-bottom:2%;
+    margin-bottom:3px;
   }
   .sc-author{
     font-family:var(--serif);
-    font-size:2.9vw;
+    font-size:8px;
     color:rgba(251,248,242,.7);
   }
 
